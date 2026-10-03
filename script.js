@@ -1,67 +1,18 @@
-const menu = [
-  { id: 1, category: "飯類", name: "白飯", price: 15 },
-  { id: 2, category: "飯類", name: "雞肉飯", price: 45 },
-  { id: 3, category: "飯類", name: "魚鬆飯", price: 45 },
-  { id: 4, category: "飯類", name: "肉燥飯", price: 40 },
-  { id: 5, category: "飯類", name: "菜飯便當", price: 70 },
-  { id: 6, category: "飯類", name: "肉燥便當", price: 80 },
-  { id: 7, category: "飯類", name: "雞肉便當", price: 95 },
-  { id: 8, category: "飯類", name: "魚鬆便當", price: 95 },
-  { id: 9, category: "飯類", name: "炸雞腿便當", price: 135 },
-  { id: 10, category: "飯類", name: "滷雞腿便當", price: 135 },
-  { id: 11, category: "飯類", name: "炸排骨便當", price: 125 },
-  { id: 12, category: "飯類", name: "滷排骨便當", price: 125 },
-  { id: 13, category: "飯類", name: "豬腳便當", price: 120 },
-  { id: 14, category: "飯類", name: "控肉便當", price: 120 },
-  { id: 15, category: "飯類", name: "蝦捲便當", price: 125 },
-  { id: 16, category: "湯類", name: "虱目魚肚綜合湯", price: 165 },
-  { id: 17, category: "湯類", name: "無刺虱目魚肚湯", price: 150 },
-  { id: 18, category: "湯類", name: "蝦仔湯", price: 75 },
-  { id: 19, category: "湯類", name: "虱目魚皮湯", price: 80 },
-  { id: 20, category: "湯類", name: "虱目魚丸湯", price: 40 },
-  { id: 21, category: "湯類", name: "虱目魚肉湯", price: 65 },
-  { id: 22, category: "湯類", name: "蛤仔湯", price: 60 },
-  { id: 23, category: "湯類", name: "排骨湯", price: 45 },
-  { id: 24, category: "湯類", name: "豬肝湯", price: 55 },
-  { id: 25, category: "粥類", name: "無刺虱目魚肚粥", price: 170 },
-  { id: 26, category: "粥類", name: "虱目魚肉粥", price: 85 },
-  { id: 27, category: "小菜", name: "煎魚肚", price: 150 },
-  { id: 28, category: "小菜", name: "煎魚肚飯", price: 200 },
-  { id: 29, category: "小菜", name: "魯魚頭(3個)", price: 60 },
-  { id: 30, category: "小菜", name: "魯魚頭(1個)", price: 25 },
-  { id: 31, category: "小菜", name: "魯魚肚飯", price: 200 },
-  { id: 32, category: "小菜", name: "魯魚肚", price: 150 },
-  { id: 33, category: "小菜", name: "燙虱目魚腸", price: 70 },
-  { id: 34, category: "小菜", name: "炸雞腿", price: 85 },
-  { id: 35, category: "小菜", name: "滷雞腿", price: 85 },
-  { id: 36, category: "小菜", name: "炸排骨", price: 80 },
-  { id: 37, category: "小菜", name: "滷排骨", price: 80 },
-  { id: 38, category: "小菜", name: "豬腳(1段)", price: 80 },
-  { id: 39, category: "小菜", name: "控肉片(1片)", price: 80 },
-  { id: 40, category: "小菜", name: "白菜滷", price: 45 },
-  { id: 41, category: "小菜", name: "筍絲", price: 40 },
-  { id: 42, category: "小菜", name: "滷蛋", price: 15 },
-  { id: 43, category: "小菜", name: "荷包蛋", price: 15 },
-  { id: 44, category: "小菜", name: "滷豆腐", price: 15 },
-  { id: 45, category: "小菜", name: "小菜(炒)", price: 40 },
-];
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { addDoc, collection, getFirestore } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-const order = new Map();
-const menuList = document.getElementById("menuList");
-const orderSummary = document.getElementById("orderSummary");
-const totalAmount = document.getElementById("totalAmount");
-const clearOrderBtn = document.getElementById("clearOrderBtn");
-const submitOrderBtn = document.getElementById("submitOrderBtn");
-const categoryTabs = document.getElementById("categoryTabs");
-const customizeModal = document.getElementById("customizeModal");
-const sideOptionsContainer = document.getElementById("sideOptions");
-const closeModalBtn = document.getElementById("closeModalBtn");
-const cancelModalBtn = document.getElementById("cancelModalBtn");
-const confirmSidesBtn = document.getElementById("confirmSidesBtn");
+const firebaseConfig = {
+  apiKey: "AIzaSyC9GnZln_CXwrR7rY85QnGi2f95e66G3Dg",
+  authDomain: "xinhe-bento.firebaseapp.com",
+  projectId: "xinhe-bento",
+  storageBucket: "xinhe-bento.firebasestorage.app",
+  messagingSenderId: "741579797351",
+  appId: "1:741579797351:web:566a0934172d67856575c2",
+  measurementId: "G-CFREM0CVFT"
+};
 
-let activeCategory = "";
-let currentBento = null;
-let selectedSides = new Set();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const bentoSideOptions = [
   { name: "豆輪", health: "植物蛋白與纖維，適合補充飽足感。" },
@@ -295,7 +246,7 @@ function clearOrder() {
   renderOrder();
 }
 
-function submitOrder() {
+async function submitOrder() {
   if (order.size === 0) {
     alert("請先加入餐點後再提交訂單。");
     return;
@@ -306,8 +257,26 @@ function submitOrder() {
     .join("\n");
   const total = Array.from(order.values()).reduce((sum, item) => sum + (item.price + (item.extraCharge || 0)) * item.quantity, 0);
 
-  alert(`訂單已提交：\n${orderText}\n\n總計：NT$ ${total}`);
-  clearOrder();
+  try {
+    submitOrderBtn.textContent = "傳送中...";
+    submitOrderBtn.disabled = true;
+
+    const docRef = await addDoc(collection(db, "orders"), {
+      time: new Date().toLocaleString(),
+      items: orderText,
+      totalAmount: total,
+      status: "未處理"
+    });
+
+    alert("🎉 訂單已成功送出！訂單編號：" + docRef.id);
+    clearOrder();
+  } catch (error) {
+    console.error("寫入資料庫錯誤: ", error);
+    alert("網路錯誤，無法送出訂單。");
+  } finally {
+    submitOrderBtn.textContent = "送出訂單";
+    submitOrderBtn.disabled = false;
+  }
 }
 
 clearOrderBtn.addEventListener("click", clearOrder);
