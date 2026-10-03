@@ -263,11 +263,12 @@ async function submitOrder() {
     submitOrderBtn.textContent = "傳送中...";
     submitOrderBtn.disabled = true;
 
+    // 將訂單新增至 Firestore 的 orders 集合
     const docRef = await addDoc(collection(db, "orders"), {
       time: new Date().toLocaleString(),
       items: orderText,
       totalAmount: total,
-      status: "未處理"
+      status: "未處理" // 預留給店家後台使用的狀態欄位
     });
 
     alert("🎉 訂單已成功送出！訂單編號：" + docRef.id);
